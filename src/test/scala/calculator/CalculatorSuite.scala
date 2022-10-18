@@ -39,7 +39,6 @@ class CalculatorSuite extends munit.FunSuite:
     )
   }
 
-  // TODO revisit
   // test(
   //   "tweetRemainingCharsCount's result signal should follow the input signal"
   // ) {
@@ -57,18 +56,18 @@ class CalculatorSuite extends munit.FunSuite:
   test("colorForRemainingCharsCount with a constant signal") {
     val resultGreen1 = colorForRemainingCharsCount(Var(52))
     assertEquals(resultGreen1.currentValue, "green")
-    // val resultGreen2 = colorForRemainingCharsCount(Var(15))
-    // assertEquals(resultGreen2.currentValue, "green")
+    val resultGreen2 = colorForRemainingCharsCount(Var(15))
+    assertEquals(resultGreen2.currentValue, "green")
 
-    // val resultOrange1 = colorForRemainingCharsCount(Var(12))
-    // assertEquals(resultOrange1.currentValue, "orange")
-    // val resultOrange2 = colorForRemainingCharsCount(Var(0))
-    // assertEquals(resultOrange2.currentValue, "orange")
+    val resultOrange1 = colorForRemainingCharsCount(Var(12))
+    assertEquals(resultOrange1.currentValue, "orange")
+    val resultOrange2 = colorForRemainingCharsCount(Var(0))
+    assertEquals(resultOrange2.currentValue, "orange")
 
-    // val resultRed1 = colorForRemainingCharsCount(Var(-1))
-    // assertEquals(resultRed1.currentValue, "red")
-    // val resultRed2 = colorForRemainingCharsCount(Var(-5))
-    // assertEquals(resultRed2.currentValue, "red")
+    val resultRed1 = colorForRemainingCharsCount(Var(-1))
+    assertEquals(resultRed1.currentValue, "red")
+    val resultRed2 = colorForRemainingCharsCount(Var(-5))
+    assertEquals(resultRed2.currentValue, "red")
   }
 
   /** ************** POLYNOMIAL **
