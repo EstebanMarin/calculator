@@ -5,8 +5,8 @@ object TweetLength extends TweetLengthInterface:
 
   def tweetRemainingCharsCount(tweetText: Signal[String]): Signal[Int] =
     val t = tweetText.currentValue
-    println(s"${140 - t.length()}")
-    Signal.Var(MaxTweetLength - t.length())
+    Signal.Var(MaxTweetLength - tweetLength(t))
+
   def colorForRemainingCharsCount(
       remainingCharsCount: Signal[Int]
   ): Signal[String] =

@@ -16,41 +16,41 @@ class CalculatorSuite extends munit.FunSuite:
     val result: Signal[Int] = tweetRemainingCharsCount(Var("hello world"))
     assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
 
-    // val tooLong = "foo" * 200
-    // val result2 = tweetRemainingCharsCount(Var(tooLong))
-    // assert(result2.currentValue == MaxTweetLength - tweetLength(tooLong))
+    val tooLong = "foo" * 200
+    val result2 = tweetRemainingCharsCount(Var(tooLong))
+    assert(result2.currentValue == MaxTweetLength - tweetLength(tooLong))
   }
 
-  // test("tweetRemainingCharsCount with a constant signal") {
-  //   val result: Signal[Int] = tweetRemainingCharsCount(Var("hello world"))
-  //   assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
+  test("tweetRemainingCharsCount with a constant signal") {
+    val result: Signal[Int] = tweetRemainingCharsCount(Var("hello world"))
+    assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
 
-  //   val tooLong = "foo" * 200
-  //   val result2 = tweetRemainingCharsCount(Var(tooLong))
-  //   assert(result2.currentValue == MaxTweetLength - tweetLength(tooLong))
-  // }
+    val tooLong = "foo" * 200
+    val result2 = tweetRemainingCharsCount(Var(tooLong))
+    assert(result2.currentValue == MaxTweetLength - tweetLength(tooLong))
+  }
 
-  // test("tweetRemainingCharsCount with a supplementary char") {
-  //   val result = tweetRemainingCharsCount(Var("foo blabla \uD83D\uDCA9 bar"))
-  //   assert(
-  //     result.currentValue == MaxTweetLength - tweetLength(
-  //       "foo blabla \uD83D\uDCA9 bar"
-  //     )
-  //   )
-  // }
+  test("tweetRemainingCharsCount with a supplementary char") {
+    val result = tweetRemainingCharsCount(Var("foo blabla \uD83D\uDCA9 bar"))
+    assert(
+      result.currentValue == MaxTweetLength - tweetLength(
+        "foo blabla \uD83D\uDCA9 bar"
+      )
+    )
+  }
 
-  // test(
-  //   "tweetRemainingCharsCount's result signal should follow the input signal"
-  // ) {
-  //   val input = Var("hello world")
-  //   val result = tweetRemainingCharsCount(input)
-  //   assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
+  test(
+    "tweetRemainingCharsCount's result signal should follow the input signal"
+  ) {
+    val input: Var[String] = Var("hello world")
+    val result: Signal[Int] = tweetRemainingCharsCount(input)
+    assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
 
-  //   input() = "foobar"
-  //   assert(result.currentValue == MaxTweetLength - tweetLength("foobar"))
-  //   input() = "こんにちは"
-  //   assert(result.currentValue == MaxTweetLength - tweetLength("こんにちは"))
-  // }
+    // input() = "foobar"
+    // assert(result.currentValue == MaxTweetLength - tweetLength("foobar"))
+    // input() = "こんにちは"
+    // assert(result.currentValue == MaxTweetLength - tweetLength("こんにちは"))
+  }
 
   // test("colorForRemainingCharsCount with a constant signal") {
   //   val resultGreen1 = colorForRemainingCharsCount(Var(52))
