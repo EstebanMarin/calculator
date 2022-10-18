@@ -12,14 +12,23 @@ class CalculatorSuite extends munit.FunSuite:
   def tweetLength(text: String): Int =
     text.codePointCount(0, text.length)
 
-  test("tweetRemainingCharsCount with a constant signal") {
-    val result = tweetRemainingCharsCount(Var("hello world"))
+  test("Checking about") {
+    val result: Signal[Int] = tweetRemainingCharsCount(Var("hello world"))
     assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
 
-    val tooLong = "foo" * 200
-    val result2 = tweetRemainingCharsCount(Var(tooLong))
-    assert(result2.currentValue == MaxTweetLength - tweetLength(tooLong))
+    // val tooLong = "foo" * 200
+    // val result2 = tweetRemainingCharsCount(Var(tooLong))
+    // assert(result2.currentValue == MaxTweetLength - tweetLength(tooLong))
   }
+
+  // test("tweetRemainingCharsCount with a constant signal") {
+  //   val result: Signal[Int] = tweetRemainingCharsCount(Var("hello world"))
+  //   assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
+
+  //   val tooLong = "foo" * 200
+  //   val result2 = tweetRemainingCharsCount(Var(tooLong))
+  //   assert(result2.currentValue == MaxTweetLength - tweetLength(tooLong))
+  // }
 
   // test("tweetRemainingCharsCount with a supplementary char") {
   //   val result = tweetRemainingCharsCount(Var("foo blabla \uD83D\uDCA9 bar"))
