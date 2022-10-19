@@ -14,11 +14,27 @@ object Calculator extends CalculatorInterface:
   def computeValues(
       namedExpressions: Map[String, Signal[Expr]]
   ): Map[String, Signal[Double]] =
+    val state: Map[String, Signal[Double]] =
+      Map(
+        "a" -> Signal.Var(0.0),
+        "b" -> Signal.Var(0.0),
+        "c" -> Signal.Var(0.0),
+        "d" -> Signal.Var(0.0),
+        "e" -> Signal.Var(0.0),
+        "f" -> Signal.Var(0.0),
+        "g" -> Signal.Var(0.0),
+        "h" -> Signal.Var(0.0),
+        "i" -> Signal.Var(0.0),
+        "j" -> Signal.Var(0.0)
+      )
+
     def checkDependencies(
         key: String,
         s: Signal[Expr]
-    ): Map[String, Signal[Double]] =
-      val cExp = s.currentValue
+    ) =
+      Signal {
+        val cExp = s()
+      }
       // val test = cExp match
       //   case Ref(name) if key == name => Map(key, Signal(Double.NaN))
       //   case Ref(name)                => ???
@@ -27,10 +43,10 @@ object Calculator extends CalculatorInterface:
       //   case Minus(a, b)              => ???
       //   case Divide(a, b)             => ???
       //   case Times(a, b)              => ???
-      val test = namedExpressions.map(checkDependencies)
-      Map("a" -> Signal(2.0))
 
-    ???
+    namedExpressions.foreach(checkDependencies)
+
+    state
 
   def eval(expr: Expr, references: Map[String, Signal[Expr]])(using
       Signal.Caller
