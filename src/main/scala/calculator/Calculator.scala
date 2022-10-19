@@ -34,6 +34,9 @@ object Calculator extends CalculatorInterface:
     ) =
       Signal {
         val cExp = s()
+        cExp match
+          case Ref(name) if key == name => ???
+          case _ => ???
       }
       // val test = cExp match
       //   case Ref(name) if key == name => Map(key, Signal(Double.NaN))
