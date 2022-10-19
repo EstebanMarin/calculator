@@ -17,5 +17,9 @@ object Polynomial extends PolynomialInterface:
   ): Signal[Set[Double]] =
     Signal {
       if delta() < 0 then Set.empty
-      else Set((-b() + delta()) / (2 * a()), (-b() - delta()) / (2 * a()))
+      else
+        Set(
+          (-b() + Math.sqrt(delta())) / (2 * a()),
+          (-b() - Math.sqrt(delta())) / (2 * a())
+        )
     }

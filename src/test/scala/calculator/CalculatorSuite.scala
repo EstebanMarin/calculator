@@ -92,17 +92,16 @@ class CalculatorSuite extends munit.FunSuite:
     val delta = Var(12.0)
     val result = computeSolutions(a, b, c, delta)
     assertEquals(result.currentValue.size, 2)
-    
-    // assert(kindaEqual(result.currentValue.min, -3.732050807568877))
-    // assert(kindaEqual(result.currentValue.max, -0.2679491924311228))
-    // a() = -5.3
-    // delta() = 37.2
-    // assertEquals(result.currentValue.size, 2)
-    // assert(kindaEqual(result.currentValue.min, -0.1980358747915814))
-    // assert(kindaEqual(result.currentValue.max, 0.9527528559236569))
-    // c() = -123.456
-    // delta() = -2601.2672
-    // assertEquals(result.currentValue.size, 0)
+    assert(kindaEqual(result.currentValue.min, -3.732050807568877))
+    assert(kindaEqual(result.currentValue.max, -0.2679491924311228))
+    a() = -5.3
+    delta() = 37.2
+    assertEquals(result.currentValue.size, 2)
+    assert(kindaEqual(result.currentValue.min, -0.1980358747915814))
+    assert(kindaEqual(result.currentValue.max, 0.9527528559236569))
+    c() = -123.456
+    delta() = -2601.2672
+    assertEquals(result.currentValue.size, 0)
   }
 
   /** ************** CALCULATOR **
