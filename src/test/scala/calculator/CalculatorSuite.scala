@@ -39,19 +39,17 @@ class CalculatorSuite extends munit.FunSuite:
     )
   }
 
-  // test(
-  //   "tweetRemainingCharsCount's result signal should follow the input signal"
-  // ) {
-  //   val input: Var[String] = Var("hello world")
-  //   val result: Signal[Int] = tweetRemainingCharsCount(input)
-  //   assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
-  //   // input() = "foobar"
-  //   println(result.currentValue)
-  //   // assert(result.currentValue == MaxTweetLength - tweetLength("foobar"))
-  //   input() = "こんにちは"
-  //   println(result.currentValue)
-  //   assert(result.currentValue == MaxTweetLength - tweetLength("こんにちは"))
-  // }
+  test(
+    "tweetRemainingCharsCount's result signal should follow the input signal"
+  ) {
+    val input: Var[String] = Var("hello world")
+    val result: Signal[Int] = tweetRemainingCharsCount(input)
+    assert(result.currentValue == MaxTweetLength - tweetLength("hello world"))
+    input() = "foobar"
+    assert(result.currentValue == MaxTweetLength - tweetLength("foobar"))
+    input() = "こんにちは"
+    assert(result.currentValue == MaxTweetLength - tweetLength("こんにちは"))
+  }
 
   test("colorForRemainingCharsCount with a constant signal") {
     val resultGreen1 = colorForRemainingCharsCount(Var(52))
@@ -76,15 +74,19 @@ class CalculatorSuite extends munit.FunSuite:
   import Polynomial.*
   import Ordering.Double.TotalOrdering
 
-  // def kindaEqual(a: Double, b: Double): Boolean =
-  //   a > b - 1e-5 && a < b + 1e-5
+  def kindaEqual(a: Double, b: Double): Boolean =
+    a > b - 1e-5 && a < b + 1e-5
 
   // test("computeDelta test") {
   //   val (a, b, c) = (Var(1.0), Var(4.0), Var(1.0))
   //   val result = computeDelta(a, b, c)
 
   //   assert(kindaEqual(result.currentValue, 12.0))
+  //   // println(s"${result.currentValue}, ${a.currentValue}")
   //   a() = -5.3
+
+  //   println(s"${result.currentValue}, ${a.currentValue}")
+  //   println(result.currentValue)
   //   assert(kindaEqual(result.currentValue, 37.2))
   //   c() = -123.456
   //   assert(kindaEqual(result.currentValue, -2601.2672))
