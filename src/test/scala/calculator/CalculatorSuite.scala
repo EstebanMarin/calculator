@@ -108,16 +108,14 @@ class CalculatorSuite extends munit.FunSuite:
     */
 
   import Calculator.*
-  test("Mocking about") {
+  
+  test("Self dependency") {
     val input = Map(
       "a" -> Signal[Expr](Plus(Ref("a"), Literal(1))),
-      // "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
+      "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
     )
-    val output: Map[String, Signal[Double]] = 
-      computeValues(input)
-    println(output("a").currentValue)
+    val output = computeValues(input)
     val check = output("a").currentValue.isNaN
-    assert(true == true)
     assert(
       check,
       " - Your implementation should return NaN when the expression for a variable " +
@@ -130,183 +128,163 @@ class CalculatorSuite extends munit.FunSuite:
         "that do not refer to themselves"
     )
   }
-  
-  // test("Self dependency") {
-  //   val input = Map(
-  //     "a" -> Signal[Expr](Plus(Ref("a"), Literal(1))),
-  //     "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
-  //   )
-  //   val output = computeValues(input)
-  //   val check = output("a").currentValue.isNaN
-  //   assert(
-  //     check,
-  //     " - Your implementation should return NaN when the expression for a variable " +
-  //       "references the variable itself"
-  //   )
-  //   val checkRes = (output("d").currentValue == 2)
-  //   assert(
-  //     checkRes,
-  //     " - Your implementation should return a valid result for variables " +
-  //       "that do not refer to themselves"
-  //   )
-  // }
 
-  // test("Cyclic dependencies should result in NaN") {
-  //   val input = Map(
-  //     "a" -> Signal[Expr](Plus(Ref("b"), Literal(1))),
-  //     "b" -> Signal[Expr](Divide(Ref("c"), Ref("d"))),
-  //     "c" -> Signal[Expr](Times(Literal(5), Ref("a"))),
-  //     "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
-  //   )
-  //   val output = computeValues(input)
-  //   val checkNaNs = output("a").currentValue.isNaN && output(
-  //     "b"
-  //   ).currentValue.isNaN && output("c").currentValue.isNaN
-  //   assert(
-  //     checkNaNs,
-  //     " - Your implementation should return NaN for variables that have cyclic dependencies"
-  //   )
+  test("Cyclic dependencies should result in NaN") {
+    val input = Map(
+      "a" -> Signal[Expr](Plus(Ref("b"), Literal(1))),
+      "b" -> Signal[Expr](Divide(Ref("c"), Ref("d"))),
+      "c" -> Signal[Expr](Times(Literal(5), Ref("a"))),
+      "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
+    )
+    val output = computeValues(input)
+    val checkNaNs = output("a").currentValue.isNaN && output(
+      "b"
+    ).currentValue.isNaN && output("c").currentValue.isNaN
+    assert(
+      checkNaNs,
+      " - Your implementation should return NaN for variables that have cyclic dependencies"
+    )
 
-  //   val checkRes = (output("d").currentValue == 2)
-  //   assert(
-  //     checkRes,
-  //     " - Your implementation should return a valid result for variables " +
-  //       "that do not have any cyclic dependency"
-  //   )
-  // }
+    val checkRes = (output("d").currentValue == 2)
+    assert(
+      checkRes,
+      " - Your implementation should return a valid result for variables " +
+        "that do not have any cyclic dependency"
+    )
+  }
 
-  // test("Referencing an unknown variable should result in NaN") {
-  //   val input = Map(
-  //     "a" -> Signal[Expr](Plus(Ref("b"), Literal(1))),
-  //     "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
-  //   )
-  //   val output = computeValues(input)
-  //   val check = output("a").currentValue.isNaN
-  //   assert(
-  //     check,
-  //     " - Your implementation should return NaN on evaluating an expression that " +
-  //       "references an unknown variable"
-  //   )
+  test("Referencing an unknown variable should result in NaN") {
+    val input = Map(
+      "a" -> Signal[Expr](Plus(Ref("b"), Literal(1))),
+      "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
+    )
+    val output = computeValues(input)
+    val check = output("a").currentValue.isNaN
+    assert(
+      check,
+      " - Your implementation should return NaN on evaluating an expression that " +
+        "references an unknown variable"
+    )
 
-  //   val checkRes = (output("d").currentValue == 2)
-  //   assert(
-  //     checkRes,
-  //     " - Your implementation should return a valid result for variables " +
-  //       "that do not reference unknown variables"
-  //   )
-  // }
+    val checkRes = (output("d").currentValue == 2)
+    assert(
+      checkRes,
+      " - Your implementation should return a valid result for variables " +
+        "that do not reference unknown variables"
+    )
+  }
 
-  // test(
-  //   "Expressions corresponding to every variable should be correctly evaluated"
-  // ) {
-  //   val aexpr = Var[Expr](Plus(Ref("b"), Literal(1)))
-  //   val bexpr = Var[Expr](Times(Ref("c"), Ref("d")))
-  //   val cexpr = Var[Expr](Plus(Literal(5), Ref("d")))
-  //   val dexpr = Var[Expr](Minus(Literal(4), Literal(3)))
-  //   val input = Map("a" -> aexpr, "b" -> bexpr, "c" -> cexpr, "d" -> dexpr)
-  //   val output = computeValues(input)
-  //   var ares = output("a").currentValue == 7
-  //   assert(ares, " - Value of `a` is incorrect!")
-  //   var bres = output("b").currentValue == 6
-  //   assert(bres, " - Value of `b` is incorrect!")
-  //   var cres = output("c").currentValue == 6
-  //   assert(cres, " - Value of `c` is incorrect!")
-  //   var dres = output("d").currentValue == 1
-  //   assert(dres, " - Value of `d` is incorrect!")
+  test(
+    "Expressions corresponding to every variable should be correctly evaluated"
+  ) {
+    val aexpr = Var[Expr](Plus(Ref("b"), Literal(1)))
+    val bexpr = Var[Expr](Times(Ref("c"), Ref("d")))
+    val cexpr = Var[Expr](Plus(Literal(5), Ref("d")))
+    val dexpr = Var[Expr](Minus(Literal(4), Literal(3)))
+    val input = Map("a" -> aexpr, "b" -> bexpr, "c" -> cexpr, "d" -> dexpr)
+    val output = computeValues(input)
+    var ares = output("a").currentValue == 7
+    assert(ares, " - Value of `a` is incorrect!")
+    var bres = output("b").currentValue == 6
+    assert(bres, " - Value of `b` is incorrect!")
+    var cres = output("c").currentValue == 6
+    assert(cres, " - Value of `c` is incorrect!")
+    var dres = output("d").currentValue == 1
+    assert(dres, " - Value of `d` is incorrect!")
 
-  //   // update `d`
-  //   dexpr() = Plus(Literal(4), Literal(3))
-  //   ares = output("a").currentValue == 85
-  //   assert(ares, " - Value of `a` is incorrect after updating expression `d`!")
-  //   bres = output("b").currentValue == 84
-  //   assert(bres, " - Value of `b` is incorrect after updating expression `d`!")
-  //   cres = output("c").currentValue == 12
-  //   assert(cres, " - Value of `c` is incorrect after updating expression `d`!")
-  //   dres = output("d").currentValue == 7
-  //   assert(dres, " - Value of `d` is incorrect after updating expression `d`!")
-  // }
+    // update `d`
+    dexpr() = Plus(Literal(4), Literal(3))
+    ares = output("a").currentValue == 85
+    assert(ares, " - Value of `a` is incorrect after updating expression `d`!")
+    bres = output("b").currentValue == 84
+    assert(bres, " - Value of `b` is incorrect after updating expression `d`!")
+    cres = output("c").currentValue == 12
+    assert(cres, " - Value of `c` is incorrect after updating expression `d`!")
+    dres = output("d").currentValue == 7
+    assert(dres, " - Value of `d` is incorrect after updating expression `d`!")
+  }
 
-  // test(
-  //   "When an expression changes, other variables that depend on it should be recomputed"
-  // ) {
-  //   val aexpr = Var[Expr](Plus(Ref("b"), Literal(1)))
-  //   val bexpr = Var[Expr](Times(Ref("c"), Ref("d")))
-  //   val cexpr = Var[Expr](Plus(Literal(5), Ref("d")))
-  //   val dexpr = Var[Expr](Minus(Literal(4), Literal(3)))
-  //   val input = Map("a" -> aexpr, "b" -> bexpr, "c" -> cexpr, "d" -> dexpr)
-  //   val output = computeValues(input)
+  test(
+    "When an expression changes, other variables that depend on it should be recomputed"
+  ) {
+    val aexpr = Var[Expr](Plus(Ref("b"), Literal(1)))
+    val bexpr = Var[Expr](Times(Ref("c"), Ref("d")))
+    val cexpr = Var[Expr](Plus(Literal(5), Ref("d")))
+    val dexpr = Var[Expr](Minus(Literal(4), Literal(3)))
+    val input = Map("a" -> aexpr, "b" -> bexpr, "c" -> cexpr, "d" -> dexpr)
+    val output = computeValues(input)
 
-  //   val oldvals = output.map { case (k, v) =>
-  //     (k -> v.currentValue)
-  //   }
-  //   cexpr() = Plus(Literal(4), Literal(3))
-  //   val checkRes = (output("a").currentValue != oldvals("a")) && (output(
-  //     "b"
-  //   ).currentValue != oldvals("b")) &&
-  //     (output("c").currentValue != oldvals("c")) && (output(
-  //       "d"
-  //     ).currentValue == oldvals("d"))
-  //   assert(
-  //     checkRes,
-  //     " - Your implementation should update the dependent values " +
-  //       "when an expression changes"
-  //   )
-  // }
+    val oldvals = output.map { case (k, v) =>
+      (k -> v.currentValue)
+    }
+    cexpr() = Plus(Literal(4), Literal(3))
+    val checkRes = (output("a").currentValue != oldvals("a")) && (output(
+      "b"
+    ).currentValue != oldvals("b")) &&
+      (output("c").currentValue != oldvals("c")) && (output(
+        "d"
+      ).currentValue == oldvals("d"))
+    assert(
+      checkRes,
+      " - Your implementation should update the dependent values " +
+        "when an expression changes"
+    )
+  }
 
-  // test(
-  //   "If b previously depended on a, but no longer does, then its value should not change anymore when a changes"
-  // ) {
-  //   val aexpr = Var[Expr](Minus(Literal(4), Literal(3)))
-  //   val bexpr = Var[Expr](Plus(Ref("a"), Literal(1)))
-  //   val input = Map("a" -> aexpr, "b" -> bexpr)
-  //   val output = computeValues(input)
+  test(
+    "If b previously depended on a, but no longer does, then its value should not change anymore when a changes"
+  ) {
+    val aexpr = Var[Expr](Minus(Literal(4), Literal(3)))
+    val bexpr = Var[Expr](Plus(Ref("a"), Literal(1)))
+    val input = Map("a" -> aexpr, "b" -> bexpr)
+    val output = computeValues(input)
 
-  //   val oldvals = output.map { case (k, v) =>
-  //     (k -> v.currentValue)
-  //   }
-  //   bexpr() = Literal(1)
+    val oldvals = output.map { case (k, v) =>
+      (k -> v.currentValue)
+    }
+    bexpr() = Literal(1)
 
-  //   var bchanged = -1
-  //   val depSignal = Signal {
-  //     output("b")()
-  //     bchanged += 1
-  //   }
-  //   aexpr() = Literal(5)
-  //   val checkRes = bexpr.currentValue == Literal(1)
-  //   assert(checkRes, " - The value of `b` should be 1")
-  //   assert(bchanged == 0, " - Signal `b` should not be recomputed")
-  // }
+    var bchanged = -1
+    val depSignal = Signal {
+      output("b")()
+      bchanged += 1
+    }
+    aexpr() = Literal(5)
+    val checkRes = bexpr.currentValue == Literal(1)
+    assert(checkRes, " - The value of `b` should be 1")
+    assert(bchanged == 0, " - Signal `b` should not be recomputed")
+  }
 
-  // test(
-  //   "When an expression changes, *only* the variables that depend on it should be recomputed"
-  // ) {
-  //   val aexpr = Var[Expr](Plus(Ref("b"), Literal(1)))
-  //   val bexpr = Var[Expr](Times(Literal(5), Ref("d")))
-  //   val cexpr = Var[Expr](Plus(Literal(5), Ref("d")))
-  //   val dexpr = Var[Expr](Minus(Literal(4), Literal(3)))
-  //   val input = Map("a" -> aexpr, "b" -> bexpr, "c" -> cexpr, "d" -> dexpr)
-  //   val output = computeValues(input)
+  test(
+    "When an expression changes, *only* the variables that depend on it should be recomputed"
+  ) {
+    val aexpr = Var[Expr](Plus(Ref("b"), Literal(1)))
+    val bexpr = Var[Expr](Times(Literal(5), Ref("d")))
+    val cexpr = Var[Expr](Plus(Literal(5), Ref("d")))
+    val dexpr = Var[Expr](Minus(Literal(4), Literal(3)))
+    val input = Map("a" -> aexpr, "b" -> bexpr, "c" -> cexpr, "d" -> dexpr)
+    val output = computeValues(input)
 
-  //   var accessMap = Map[String, Int]()
-  //   def updateMap(key: String): Unit =
-  //     if accessMap.contains(key) then
-  //       accessMap = accessMap.updated(key, accessMap(key) + 1)
-  //     else accessMap += (key -> 0)
+    var accessMap = Map[String, Int]()
+    def updateMap(key: String): Unit =
+      if accessMap.contains(key) then
+        accessMap = accessMap.updated(key, accessMap(key) + 1)
+      else accessMap += (key -> 0)
 
-  //   val depSignals = output.map { case (k, v) =>
-  //     (k -> Signal {
-  //       v()
-  //       updateMap(k)
-  //     })
-  //   }
-  //   cexpr() = Plus(Literal(4), Literal(3))
-  //   val checkRes = accessMap.filterNot(x => x._1 == "c").forall(x => x._2 == 0)
-  //   assert(
-  //     checkRes,
-  //     " - Your implementation should update only the dependent values " +
-  //       "when an expression changes"
-  //   )
-  // }
+    val depSignals = output.map { case (k, v) =>
+      (k -> Signal {
+        v()
+        updateMap(k)
+      })
+    }
+    cexpr() = Plus(Literal(4), Literal(3))
+    val checkRes = accessMap.filterNot(x => x._1 == "c").forall(x => x._2 == 0)
+    assert(
+      checkRes,
+      " - Your implementation should update only the dependent values " +
+        "when an expression changes"
+    )
+  }
   /*++++++*/
 
   import scala.concurrent.duration.*

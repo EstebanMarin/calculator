@@ -27,11 +27,9 @@ object Calculator extends CalculatorInterface:
       case Minus(a, b)  => eval(a, references) + eval(b, references)
       case Times(a, b)  => eval(a, references) * eval(b, references)
       case Divide(a, b) => eval(a, references) / eval(b, references)
-      case Ref(name) =>
-        val expr = getReferenceExpr(name, references)
-        val filteredRefs = references filter { case (k, v) => k != name }
-        eval(expr, filteredRefs)
-      case _ => Double.NaN
+      case Ref(name) => 
+        val ref = getReferenceExpr(name, references)
+        eval(ref, references - name)
 
   /** Get the Expr for a referenced variables. If the variable is not known,
     * returns a literal NaN.
