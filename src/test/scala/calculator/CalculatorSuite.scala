@@ -108,8 +108,27 @@ class CalculatorSuite extends munit.FunSuite:
     */
 
   import Calculator.*
-
-  // test cases for calculator
+  test("Mocking about") {
+    val input = Map(
+      "a" -> Signal[Expr](Plus(Ref("a"), Literal(1))),
+      "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
+    )
+    // val output = computeValues(input)
+    // val check = output("a").currentValue.isNaN
+    assert(true == true)
+    // assert(
+    //   check,
+    //   " - Your implementation should return NaN when the expression for a variable " +
+    //     "references the variable itself"
+    // )
+    // val checkRes = (output("d").currentValue == 2)
+    // assert(
+    //   checkRes,
+    //   " - Your implementation should return a valid result for variables " +
+    //     "that do not refer to themselves"
+    // )
+  }
+  
   // test("Self dependency") {
   //   val input = Map(
   //     "a" -> Signal[Expr](Plus(Ref("a"), Literal(1))),
@@ -122,7 +141,6 @@ class CalculatorSuite extends munit.FunSuite:
   //     " - Your implementation should return NaN when the expression for a variable " +
   //       "references the variable itself"
   //   )
-
   //   val checkRes = (output("d").currentValue == 2)
   //   assert(
   //     checkRes,
