@@ -77,40 +77,33 @@ class CalculatorSuite extends munit.FunSuite:
   def kindaEqual(a: Double, b: Double): Boolean =
     a > b - 1e-5 && a < b + 1e-5
 
-  // test("computeDelta test") {
-  //   val (a, b, c) = (Var(1.0), Var(4.0), Var(1.0))
-  //   val result = computeDelta(a, b, c)
+  test("computeDelta test") {
+    val (a, b, c) = (Var(1.0), Var(4.0), Var(1.0))
+    val result = computeDelta(a, b, c)
+    assert(kindaEqual(result.currentValue, 12.0))
+    a() = -5.3
+    assert(kindaEqual(result.currentValue, 37.2))
+    c() = -123.456
+    assert(kindaEqual(result.currentValue, -2601.2672))
+  }
 
-  //   assert(kindaEqual(result.currentValue, 12.0))
-  //   // println(s"${result.currentValue}, ${a.currentValue}")
-  //   a() = -5.3
-
-  //   println(s"${result.currentValue}, ${a.currentValue}")
-  //   println(result.currentValue)
-  //   assert(kindaEqual(result.currentValue, 37.2))
-  //   c() = -123.456
-  //   assert(kindaEqual(result.currentValue, -2601.2672))
-  // }
-
-  // test("computeSolutions test") {
-  //   val (a, b, c) = (Var(1.0), Var(4.0), Var(1.0))
-  //   val delta = Var(12.0)
-  //   val result = computeSolutions(a, b, c, delta)
-
-  //   assertEquals(result.currentValue.size, 2)
-  //   assert(kindaEqual(result.currentValue.min, -3.732050807568877))
-  //   assert(kindaEqual(result.currentValue.max, -0.2679491924311228))
-
-  //   a() = -5.3
-  //   delta() = 37.2
-  //   assertEquals(result.currentValue.size, 2)
-  //   assert(kindaEqual(result.currentValue.min, -0.1980358747915814))
-  //   assert(kindaEqual(result.currentValue.max, 0.9527528559236569))
-
-  //   c() = -123.456
-  //   delta() = -2601.2672
-  //   assertEquals(result.currentValue.size, 0)
-  // }
+  test("computeSolutions test") {
+    val (a, b, c) = (Var(1.0), Var(4.0), Var(1.0))
+    val delta = Var(12.0)
+    val result = computeSolutions(a, b, c, delta)
+    assertEquals(result.currentValue.size, 2)
+    
+    // assert(kindaEqual(result.currentValue.min, -3.732050807568877))
+    // assert(kindaEqual(result.currentValue.max, -0.2679491924311228))
+    // a() = -5.3
+    // delta() = 37.2
+    // assertEquals(result.currentValue.size, 2)
+    // assert(kindaEqual(result.currentValue.min, -0.1980358747915814))
+    // assert(kindaEqual(result.currentValue.max, 0.9527528559236569))
+    // c() = -123.456
+    // delta() = -2601.2672
+    // assertEquals(result.currentValue.size, 0)
+  }
 
   /** ************** CALCULATOR **
     */
