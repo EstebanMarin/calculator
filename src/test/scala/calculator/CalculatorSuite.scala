@@ -113,7 +113,9 @@ class CalculatorSuite extends munit.FunSuite:
       "a" -> Signal[Expr](Plus(Ref("a"), Literal(1))),
       "d" -> Signal[Expr](Minus(Literal(5), Literal(3)))
     )
-    // val output = computeValues(input)
+    val output: Map[String, Signal[Double]] = 
+      computeValues(input)
+    println(output("a").currentValue)
     // val check = output("a").currentValue.isNaN
     assert(true == true)
     // assert(
